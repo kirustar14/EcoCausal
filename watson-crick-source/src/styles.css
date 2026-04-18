@@ -1,0 +1,217 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-lab-green: var(--lab-green);
+  --color-lab-green-soft: var(--lab-green-soft);
+  --color-lab-blue: var(--lab-blue);
+  --color-lab-blue-soft: var(--lab-blue-soft);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+  --font-sans: var(--font-display);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Watson & Crick — clean lab notebook: white paper, black ink, green + blue */
+  --background: oklch(0.99 0 0);                 /* near-white */
+  --foreground: oklch(0.16 0.01 250);            /* ink black */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.01 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.01 250);
+
+  --primary: oklch(0.55 0.15 160);               /* signal green */
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.97 0.005 250);
+  --secondary-foreground: oklch(0.18 0.01 250);
+
+  --muted: oklch(0.96 0.005 250);
+  --muted-foreground: oklch(0.45 0.01 250);
+
+  --accent: oklch(0.5 0.18 245);                 /* lab blue */
+  --accent-foreground: oklch(0.99 0 0);
+
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.16 0.01 250);                /* hard ink borders */
+  --input: oklch(0.92 0.005 250);
+  --ring: oklch(0.55 0.15 160);
+
+  --lab-green: oklch(0.55 0.15 160);
+  --lab-green-soft: oklch(0.92 0.07 160);
+  --lab-blue: oklch(0.5 0.18 245);
+  --lab-blue-soft: oklch(0.92 0.06 245);
+  --ink: oklch(0.16 0.01 250);
+  --paper: oklch(0.99 0 0);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --shadow-pop: 4px 4px 0 0 var(--ink);
+  --shadow-pop-lg: 6px 6px 0 0 var(--ink);
+  --shadow-pop-green: 4px 4px 0 0 var(--lab-green);
+  --shadow-pop-blue: 4px 4px 0 0 var(--lab-blue);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    font-feature-settings: "ss01", "ss02";
+  }
+
+  /* Clean white paper — no dot grid */
+  body {
+    background-color: var(--color-background);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  .serif { font-family: var(--font-serif); letter-spacing: -0.01em; }
+  .mono { font-family: var(--font-mono); }
+}
+
+@layer utilities {
+  .pop-card {
+    background-color: var(--color-card);
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-pop);
+    border-radius: var(--radius-lg);
+  }
+  .pop-card-lg {
+    background-color: var(--color-card);
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-pop-lg);
+    border-radius: var(--radius-xl);
+  }
+  .ink-border { border: 2px solid var(--color-border); }
+
+  .tag-green { background: var(--lab-green-soft); color: var(--ink); }
+  .tag-blue  { background: var(--lab-blue-soft);  color: var(--ink); }
+  .tag-ink   { background: var(--ink);            color: var(--paper); }
+  .tag-paper { background: var(--paper);          color: var(--ink); }
+
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    background: var(--card);
+  }
+
+  /* Soft speech bubble — neutral muted by default */
+  .bubble {
+    position: relative;
+    background: var(--muted);
+    color: var(--foreground);
+    border-radius: 18px;
+    padding: 10px 14px;
+  }
+  .bubble.bubble-left::after,
+  .bubble.bubble-right::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    transform: rotate(45deg);
+  }
+  .bubble.bubble-left::after { left: 18px; }
+  .bubble.bubble-right::after { right: 18px; }
+
+  @keyframes status-in {
+    from { opacity: 0; transform: translate(0, 8px); }
+    to { opacity: 1; transform: translate(0, 0); }
+  }
+  .animate-status-in { animation: status-in 0.45s cubic-bezier(.2,.7,.2,1) both; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+  .animate-blink { animation: blink 1s ease-in-out infinite; }
+
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .animate-float { animation: float-y 4s ease-in-out infinite; }
+  .animate-float-slow { animation: float-y 5.5s ease-in-out infinite; }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(-1.5deg); }
+  }
+  .animate-bob { animation: bob 3s ease-in-out infinite; }
+
+  @keyframes typing {
+    0% { opacity: 0.2; transform: translateY(0); }
+    20% { opacity: 1; transform: translateY(-3px); }
+    100% { opacity: 0.2; transform: translateY(0); }
+  }
+  .typing-dot {
+    width: 6px; height: 6px; border-radius: 999px; background: var(--ink);
+    display: inline-block;
+    animation: typing 1.1s ease-in-out infinite;
+  }
+
+  @keyframes bubble-up {
+    0% { transform: translateY(8px) scale(0.94); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .animate-bubble-up { animation: bubble-up 0.35s cubic-bezier(.2,.8,.2,1) both; }
+}
