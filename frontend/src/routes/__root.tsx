@@ -1,6 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-
+import { ensureSeeded } from "@/lib/community-store";
 import appCss from "../styles.css?url";
+import { useEffect } from "react";
 
 function NotFoundComponent() {
   return (
@@ -23,6 +24,8 @@ function NotFoundComponent() {
     </div>
   );
 }
+
+
 
 export const Route = createRootRoute({
   head: () => ({
@@ -65,5 +68,8 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  useEffect(() => {
+    ensureSeeded();
+  }, []);
   return <Outlet />;
 }

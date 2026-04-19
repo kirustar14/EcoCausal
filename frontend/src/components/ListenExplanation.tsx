@@ -25,7 +25,7 @@ export function ListenExplanation({ data }: Props) {
   const start = async () => {
     setState("loading");
     try {
-      const h = await speak(text);
+      const h = await speak(text, "crick");
       handleRef.current = h;
       if (h.audio) {
         h.audio.addEventListener("loadedmetadata", () => setDuration(h.audio!.duration));

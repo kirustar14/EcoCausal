@@ -9,12 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SolarRouteImport } from './routes/solar'
+import { Route as ScrippsRouteImport } from './routes/scripps'
 import { Route as RunRouteImport } from './routes/run'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as NotebookRouteImport } from './routes/notebook'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as DebateRouteImport } from './routes/debate'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SolarRoute = SolarRouteImport.update({
+  id: '/solar',
+  path: '/solar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScrippsRoute = ScrippsRouteImport.update({
+  id: '/scripps',
+  path: '/scripps',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RunRoute = RunRouteImport.update({
   id: '/run',
   path: '/run',
@@ -23,6 +39,26 @@ const RunRoute = RunRouteImport.update({
 const ResultsRoute = ResultsRouteImport.update({
   id: '/results',
   path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotebookRoute = NotebookRouteImport.update({
+  id: '/notebook',
+  path: '/notebook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DebateRoute = DebateRouteImport.update({
@@ -45,42 +81,114 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
   '/debate': typeof DebateRoute
+  '/discover': typeof DiscoverRoute
+  '/history': typeof HistoryRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/notebook': typeof NotebookRoute
   '/results': typeof ResultsRoute
   '/run': typeof RunRoute
+  '/scripps': typeof ScrippsRoute
+  '/solar': typeof SolarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
   '/debate': typeof DebateRoute
+  '/discover': typeof DiscoverRoute
+  '/history': typeof HistoryRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/notebook': typeof NotebookRoute
   '/results': typeof ResultsRoute
   '/run': typeof RunRoute
+  '/scripps': typeof ScrippsRoute
+  '/solar': typeof SolarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
   '/debate': typeof DebateRoute
+  '/discover': typeof DiscoverRoute
+  '/history': typeof HistoryRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/notebook': typeof NotebookRoute
   '/results': typeof ResultsRoute
   '/run': typeof RunRoute
+  '/scripps': typeof ScrippsRoute
+  '/solar': typeof SolarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/compare' | '/debate' | '/results' | '/run'
+  fullPaths:
+    | '/'
+    | '/compare'
+    | '/debate'
+    | '/discover'
+    | '/history'
+    | '/leaderboard'
+    | '/notebook'
+    | '/results'
+    | '/run'
+    | '/scripps'
+    | '/solar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/compare' | '/debate' | '/results' | '/run'
-  id: '__root__' | '/' | '/compare' | '/debate' | '/results' | '/run'
+  to:
+    | '/'
+    | '/compare'
+    | '/debate'
+    | '/discover'
+    | '/history'
+    | '/leaderboard'
+    | '/notebook'
+    | '/results'
+    | '/run'
+    | '/scripps'
+    | '/solar'
+  id:
+    | '__root__'
+    | '/'
+    | '/compare'
+    | '/debate'
+    | '/discover'
+    | '/history'
+    | '/leaderboard'
+    | '/notebook'
+    | '/results'
+    | '/run'
+    | '/scripps'
+    | '/solar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CompareRoute: typeof CompareRoute
   DebateRoute: typeof DebateRoute
+  DiscoverRoute: typeof DiscoverRoute
+  HistoryRoute: typeof HistoryRoute
+  LeaderboardRoute: typeof LeaderboardRoute
+  NotebookRoute: typeof NotebookRoute
   ResultsRoute: typeof ResultsRoute
   RunRoute: typeof RunRoute
+  ScrippsRoute: typeof ScrippsRoute
+  SolarRoute: typeof SolarRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/solar': {
+      id: '/solar'
+      path: '/solar'
+      fullPath: '/solar'
+      preLoaderRoute: typeof SolarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scripps': {
+      id: '/scripps'
+      path: '/scripps'
+      fullPath: '/scripps'
+      preLoaderRoute: typeof ScrippsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/run': {
       id: '/run'
       path: '/run'
@@ -93,6 +201,34 @@ declare module '@tanstack/react-router' {
       path: '/results'
       fullPath: '/results'
       preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notebook': {
+      id: '/notebook'
+      path: '/notebook'
+      fullPath: '/notebook'
+      preLoaderRoute: typeof NotebookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/debate': {
@@ -123,8 +259,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompareRoute: CompareRoute,
   DebateRoute: DebateRoute,
+  DiscoverRoute: DiscoverRoute,
+  HistoryRoute: HistoryRoute,
+  LeaderboardRoute: LeaderboardRoute,
+  NotebookRoute: NotebookRoute,
   ResultsRoute: ResultsRoute,
   RunRoute: RunRoute,
+  ScrippsRoute: ScrippsRoute,
+  SolarRoute: SolarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

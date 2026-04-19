@@ -8,6 +8,8 @@ import { ExperimentSummary } from "@/components/ExperimentSummary";
 import { AskScientists } from "@/components/AskScientists";
 import { ResultsActions } from "@/components/ResultsActions";
 import { ListenExplanation } from "@/components/ListenExplanation";
+import { SignalExtraction } from "@/components/SignalExtraction";
+import { SimilarResearch } from "@/components/SimilarResearch";
 import { getQuestion, getResult, setQuestion } from "@/lib/run-store";
 import type { AnalyzeResponse } from "@/lib/mock-analyze";
 
@@ -104,8 +106,18 @@ function ResultsPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-6 pb-16">
+      <section className="mx-auto w-full max-w-6xl px-6 pb-6">
         <ExperimentSummary question={question} data={data} />
+      </section>
+
+      {/* Signal extraction — now fetches real funnel data from backend */}
+      <section className="mx-auto w-full max-w-6xl px-6 pb-6">
+        <SignalExtraction question={question} scrollAnchor="signal-extraction" />
+      </section>
+
+      {/* Similar research from community */}
+      <section className="mx-auto w-full max-w-6xl px-6 pb-6">
+        <SimilarResearch question={question} data={data} />
       </section>
 
       <AskScientists question={question} data={data} />

@@ -3,10 +3,10 @@
 
 const VOICE_IDS = {
   watson: "JBFqnCBsd6RMkjVDRZzb", // George — confident, authoritative
-  crick: "TxGEqnHWrfWFTfGW9XjX", // Josh — younger, energetic
+  crick: "onwK4e9ZLuTAKqWW03F9",  // Josh — younger, energetic
 };
 
-const MODEL_ID = "eleven_turbo_v2_5";
+const MODEL_ID = "eleven_monolingual_v1";
 
 export type VoiceHandle = {
   audio: HTMLAudioElement | null;
@@ -14,13 +14,14 @@ export type VoiceHandle = {
   source: "elevenlabs" | "browser";
 };
 
-export async function speak(text: string, voice: "watson" | "crick"): Promise<VoiceHandle> {
+export async function speak(text: string, voice: "watson" | "crick" = "watson"): Promise<VoiceHandle> {
   const apiKey = (import.meta.env.VITE_ELEVENLABS_API_KEY as string | undefined)?.trim();
+  console.log("[voice] API key present:", !!apiKey, "length:", apiKey?.length);
 
   if (apiKey) {
     try {
       const res = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_IDS[voice]}/stream?output_format=mp3_44100_128`,
+        `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_IDS[voice]}?output_format=mp3_44100_128`,
         {
           method: "POST",
           headers: {

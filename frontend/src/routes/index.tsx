@@ -1,9 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChatInput } from "@/components/ChatInput";
 import { SuggestionChips } from "@/components/SuggestionChips";
 import { Scientist } from "@/components/Scientist";
 import { SiteHeader } from "@/components/SiteHeader";
+import { OnboardingIntro } from "@/components/OnboardingIntro";
+import { CommunityStatsBar } from "@/components/CommunityStatsBar";
+import { FeaturedStudy } from "@/components/FeaturedStudy";
+import { ForkBanner, readForkContext } from "@/components/ForkBanner";
 import { setQuestion } from "@/lib/run-store";
 
 export const Route = createFileRoute("/")({
@@ -24,19 +28,36 @@ const SUGGESTIONS = [
   "Does PM2.5 exposure correlate with Alzheimer's risk?",
   "How does heat stress relate to cardiovascular disease genes?",
   "What's the link between air quality and asthma in San Diego?",
+  "How does solar adoption affect respiratory health in San Diego? (Solar Research)",
 ];
 
 function Index() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
+  // Always show intro on landing — judges/users see it every visit
+  const [showIntro, setShowIntro] = useState(true);
+
+  // Pre-fill query if user came in via Fork
+  useEffect(() => {
+    const ctx = readForkContext();
+    if (ctx) {
+      setQ(ctx.question);
+      setShowIntro(false);
+    }
+  }, []);
 
   const submit = (question: string) => {
     setQuestion(question);
     navigate({ to: "/run" });
   };
 
+  // Intro plays first, fully replacing the homepage
+  if (showIntro) {
+    return <OnboardingIntro onDone={() => setShowIntro(false)} />;
+  }
+
   return (
-    <main className="min-h-screen flex flex-col bg-background">
+    <main className="min-h-screen flex flex-col bg-background animate-status-in">
       <SiteHeader />
 
       <section className="flex-1 mx-auto w-full max-w-5xl px-6 pt-20 pb-10 flex flex-col items-center">
@@ -59,7 +80,7 @@ function Index() {
           {/* Watson */}
           <div className="flex flex-col items-center">
             <div className="bubble bubble-left mb-4 max-w-[170px] text-sm">
-              <p className="text-foreground/80 leading-snug">What's on your mind?</p>
+              <p className="text-foreground/80 leading-snug">Pick a thread, any thread.</p>
             </div>
             <Scientist who="watson" size={140} />
             <div className="mt-2 text-xs text-foreground/55 mono uppercase tracking-[0.18em]">
@@ -69,6 +90,8 @@ function Index() {
 
           {/* Chat input column */}
           <div className="pb-16 w-full">
+            <ForkBanner />
+            <FeaturedStudy />
             <ChatInput
               value={q}
               onChange={setQ}
@@ -78,13 +101,16 @@ function Index() {
             <div className="mt-4">
               <SuggestionChips suggestions={SUGGESTIONS} onPick={submit} />
             </div>
+            <div className="mt-5 flex justify-center">
+              <CommunityStatsBar />
+            </div>
           </div>
 
           {/* Crick */}
           <div className="flex flex-col items-center">
             <div className="bubble bubble-right mb-4 max-w-[170px] text-sm ml-auto">
               <p className="text-foreground/80 leading-snug text-right">
-                Crack your theories, instantly.
+                I'll bring the receipts.
               </p>
             </div>
             <Scientist who="crick" size={140} />

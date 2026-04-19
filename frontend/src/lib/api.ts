@@ -114,3 +114,81 @@ export type PaperResponse = {
 
 export const fetchPaper = (question: string) =>
   apiPost<PaperResponse>("/generate-paper", { question });
+
+// ── /analyze ─────────────────────────────────────────────────────
+
+export type AnalyzeAPIResponse = {
+  env_factor: string;
+  outcome: string;
+  stats: { r: number; p: number; slope: number | null; confidence: "HIGH" | "MODERATE" | "LOW"; n: number };
+  hypotheses: { rank: number; confidence: string; hypothesis: string; mechanism: string }[];
+  graph: {
+    nodes: { id: string; label: string; type: string; color: string }[];
+    edges: { source: string; target: string; weight: number }[];
+  };
+  report: string;
+  summary: string;
+  similar_questions: string[];
+  datasets_used: string[];
+};
+
+export const fetchAnalyze = (question: string) =>
+  apiPost<AnalyzeAPIResponse>("/analyze", { question });
+
+// ── /banter ──────────────────────────────────────────────────────
+
+export type BanterStep = "ingesting_data" | "computing_stats" | "mapping_genes" | "generating_hypotheses" | "complete";
+
+export type BanterResponse = {
+  step: BanterStep;
+  step_index: number;
+  watson: string;
+  crick: string;
+  env_factor: string;
+  outcome: string;
+};
+
+export const fetchBanterStep = (question: string, step: BanterStep, step_index: number) =>
+  apiPost<BanterResponse>("/banter", { question, step, step_index });
+
+// ── /signal-extraction ────────────────────────────────────────────
+
+export type SignalExtractionResponse = {
+  question: string;
+  funnel: { stage: string; count: number; label: string; description: string }[];
+  confidence_factors: { factor: string; score: number; weight: number; contribution: number; description: string }[];
+  overall_confidence: number;
+  confidence_level: "HIGH" | "MODERATE" | "LOW";
+  env_factor: string;
+  outcome: string;
+  datasets_used: string[];
+};
+
+export const fetchSignalExtraction = (question: string) =>
+  apiPost<SignalExtractionResponse>("/signal-extraction", { question });
+
+// ── /scripps ─────────────────────────────────────────────────────
+
+export type ScrippsResponse = {
+  time_of_day: string;
+  hour_range: string;
+  zones: { zone: string; temp_f: number; temp_c: number; humidity: number; heat_index: number; risk: "HIGH" | "MODERATE" | "LOW" }[];
+  summary: { mean_temp_f: number; max_temp_f: number; mean_humidity: number; high_risk_zones: string[]; data_source: string; n_readings: number };
+  metrics: string[];
+};
+
+export const fetchScripps = (time: "morning" | "afternoon" | "evening" = "afternoon") =>
+  fetch(`${BASE}/scripps?time=${time}`).then((r) => r.json()) as Promise<ScrippsResponse>;
+
+// ── /solar/sandiego ───────────────────────────────────────────────
+
+export type SolarResponse = {
+  neighborhoods: { name: string; solar_permits: number; lat: number; lng: number; asthma_prevalence_pct: number; respiratory_er_per_10k: number; co2_offset_tons_yr: number; solar_coverage_pct: number; data_year: number }[];
+  summary: { total_permits: number; total_co2_offset_tons: number; mean_asthma_pct: number; correlation: { solar_vs_asthma_r: number; p_value: number; interpretation: string } };
+  chart_series: { x_label: string; y1_label: string; y2_label: string; points: { x: number; y1: number; y2: number; label: string }[] };
+  data_sources: string[];
+  generated_at: string;
+};
+
+export const fetchSolar = () =>
+  fetch(`${BASE}/solar/sandiego`).then((r) => r.json()) as Promise<SolarResponse>;

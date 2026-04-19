@@ -33,6 +33,7 @@ function RunPage() {
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Load question and fetch real banter from backend
   useEffect(() => {
     const q = getQuestion();
     if (!q) { navigate({ to: "/" }); return; }
@@ -40,6 +41,7 @@ function RunPage() {
     setBanter(getBanter(q));
   }, [navigate]);
 
+  // Reveal banter lines one by one
   useEffect(() => {
     if (banter.length === 0) return;
     setShown([]);
@@ -50,6 +52,7 @@ function RunPage() {
     return () => timers.forEach(clearTimeout);
   }, [banter]);
 
+  // Animate pipeline steps
   useEffect(() => {
     if (!question) return;
     setStep(0);
@@ -60,6 +63,7 @@ function RunPage() {
     return () => timers.forEach(clearTimeout);
   }, [question]);
 
+  // Run the real analysis
   useEffect(() => {
     if (!question) return;
     let cancelled = false;
@@ -79,6 +83,7 @@ function RunPage() {
     return () => { cancelled = true; };
   }, [question, navigate]);
 
+  // Auto-scroll banter
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [shown.length]);
@@ -134,7 +139,7 @@ function RunPage() {
         <div className="max-w-xl mx-auto">
           <ol className="space-y-2">
             {PIPELINE.map((label, i) => {
-              const done = i < step - 1;
+              const done   = i < step - 1;
               const active = i === step - 1;
               const pending = i >= step;
               return (
