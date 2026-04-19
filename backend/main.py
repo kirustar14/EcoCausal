@@ -20,7 +20,6 @@ warnings.filterwarnings("ignore")
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-gemini = genai.GenerativeModel("gemini-2.5-flash")
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -551,7 +550,10 @@ def _explain_anomaly(pm25: float, temp_f: float, humidity: float, X: np.ndarray)
     return "; ".join(reasons) + "."
 
 def gemini_call(prompt: str) -> str:
-    response = gemini.generate_content(prompt)
+    response = gemini.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
     return response.text.strip().replace("```json", "").replace("```", "").strip()
 
 
