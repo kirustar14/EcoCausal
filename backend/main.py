@@ -550,11 +550,11 @@ def _explain_anomaly(pm25: float, temp_f: float, humidity: float, X: np.ndarray)
     return "; ".join(reasons) + "."
 
 def gemini_call(prompt: str) -> str:
-    response = gemini.models.generate_content(
+    response = gemini.generate_content(
         model="gemini-2.5-flash",
-        contents=prompt,
+        contents=prompt
     )
-    return response.text.strip().replace("```json", "").replace("```", "").strip()
+    return response.text.strip.replace("```json","").replace("```","").strip()
 
 
 def compute_stats(env_values: list, health_values: list) -> dict:
