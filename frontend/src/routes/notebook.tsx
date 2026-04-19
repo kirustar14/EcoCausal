@@ -64,7 +64,7 @@ function NotebookPage() {
             <iframe
               src="http://localhost:8081"
               className="w-full"
-              style={{ height: "1100px", border: "none", marginRight: "-20px", width: "calc(100% + 20px)" }}
+              style={{ height: "1100px", border: "none" }}
               title="Watson & Crick Marimo Notebook"
             />
             <div className="p-4 flex flex-wrap items-center justify-between gap-2 border-t border-foreground/10">

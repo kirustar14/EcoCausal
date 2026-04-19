@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { GraphPanel } from "@/components/GraphPanel";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { Scientist } from "@/components/Scientist";
@@ -10,8 +10,10 @@ import { ResultsActions } from "@/components/ResultsActions";
 import { ListenExplanation } from "@/components/ListenExplanation";
 import { SignalExtraction } from "@/components/SignalExtraction";
 import { SimilarResearch } from "@/components/SimilarResearch";
+import { MLResults } from "@/components/MLResults";
 import { getQuestion, getResult, setQuestion } from "@/lib/run-store";
 import type { AnalyzeResponse } from "@/lib/mock-analyze";
+import { MLDashboard } from "@/components/MLDashboard";
 
 export const Route = createFileRoute("/results")({
   component: ResultsPage,
@@ -110,12 +112,14 @@ function ResultsPage() {
         <ExperimentSummary question={question} data={data} />
       </section>
 
-      {/* Signal extraction — now fetches real funnel data from backend */}
+      <section className="mx-auto w-full max-w-6xl px-6 pb-6">
+        <MLDashboard />
+      </section>
+
       <section className="mx-auto w-full max-w-6xl px-6 pb-6">
         <SignalExtraction question={question} scrollAnchor="signal-extraction" />
       </section>
 
-      {/* Similar research from community */}
       <section className="mx-auto w-full max-w-6xl px-6 pb-6">
         <SimilarResearch question={question} data={data} />
       </section>
