@@ -63,9 +63,8 @@ function HistoryPage() {
     return entries.filter(
       (e) =>
         e.question.toLowerCase().includes(q) ||
-        e.result.parsed.exposure.toLowerCase().includes(q) ||
-        e.result.parsed.outcome.toLowerCase().includes(q) ||
-        (e.result.parsed.location ?? "").toLowerCase().includes(q),
+      ((e.result as any)?.env_factor ?? "").toLowerCase().includes(q) ||
+      ((e.result as any)?.outcome ?? "").toLowerCase().includes(q),
     );
   }, [entries, query]);
 
@@ -201,18 +200,17 @@ function HistoryPage() {
   );
 }
 
-function HistoryCard({
-  entry,
-  onOpen,
-  onDelete,
-}: {
-  entry: HistoryEntry;
-  onOpen: () => void;
-  onDelete: () => void;
-}) {
-  const conf = confidenceTag(entry.result.report.confidence);
-  const topFinding = entry.result.report.key_findings[0];
-  const { exposure, outcome, location } = entry.result.parsed;
+function HistoryCard({ entry, onOpen, onDelete }) {
+  const r = entry.result as any;
+  const confidenceStr: string = r?.stats?.confidence ?? "LOW";
+  const confNum = confidenceStr === "HIGH" ? 0.85 : confidenceStr === "MODERATE" ? 0.65 : 0.35;
+  const conf = confidenceTag(confNum);
+  const topFinding: string | undefined = r?.hypotheses?.[0]?.hypothesis;
+  const exposure: string = r?.env_factor ?? "—";
+  const outcome: string  = r?.outcome    ?? "—";
+  const location: string | undefined = undefined;
+  const pValue    = r?.stats?.p ?? null;
+  const sampleSize = r?.stats?.n ?? null;
 
   return (
     <li className="group relative">
@@ -228,7 +226,7 @@ function HistoryCard({
           </div>
           <div className="flex items-center gap-2">
             <span className={`stamp ${conf.cls}`}>
-              {conf.label} · {Math.round(entry.result.report.confidence * 100)}%
+              {conf.label} · {Math.round(confNum * 100)}%
             </span>
           </div>
         </div>
@@ -260,7 +258,11 @@ function HistoryCard({
         {/* Footer meta */}
         <div className="mt-4 pt-3 border-t border-foreground/10 flex items-center justify-between mono text-[10px] uppercase tracking-[0.22em] text-foreground/40">
           <span>{fmtDate(entry.saved_at)}</span>
-          <span>p = {entry.result.report.p_value} · n = {entry.result.report.sample_size.toLocaleString()}</span>
+          <span>
+            {pValue != null ? `p = ${pValue}` : ""}
+            {pValue != null && sampleSize != null ? " · " : ""}
+            {sampleSize != null ? `n = ${sampleSize.toLocaleString()}` : ""}
+          </span>
         </div>
       </button>
 

@@ -62,7 +62,7 @@ function ResultsPage() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-3xl">
             <div className="mono text-[10px] uppercase tracking-[0.28em] text-foreground/40 mb-3">
-              Findings · {new Date(data.generated_at).toLocaleDateString()}
+              Findings · {data.generated_at ? new Date(data.generated_at).toLocaleDateString() : new Date().toLocaleDateString()}
             </div>
             <h1 className="serif text-3xl sm:text-4xl text-foreground leading-tight">
               <em>"{question}"</em>

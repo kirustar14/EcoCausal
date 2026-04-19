@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Scientist } from "@/components/Scientist";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getQuestion, setResult } from "@/lib/run-store";
+import { addHistoryEntry } from "@/lib/history-store";
 import { analyze } from "@/lib/mock-analyze";
 import { getBanter, type BanterLine } from "@/lib/banter";
 
@@ -75,6 +76,7 @@ function RunPage() {
         ]);
         if (cancelled) return;
         setResult(res);
+        addHistoryEntry(question, res);
         navigate({ to: "/results" });
       } catch {
         if (!cancelled) setError("Could not reach backend. Is uvicorn running on port 8000?");
