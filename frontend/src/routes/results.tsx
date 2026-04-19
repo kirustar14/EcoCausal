@@ -1,10 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GraphPanel } from "@/components/GraphPanel";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { Scientist } from "@/components/Scientist";
 import { SiteHeader } from "@/components/SiteHeader";
-import { getQuestion, getResult } from "@/lib/run-store";
+import { ExperimentSummary } from "@/components/ExperimentSummary";
+import { AskScientists } from "@/components/AskScientists";
+import { ResultsActions } from "@/components/ResultsActions";
+import { ListenExplanation } from "@/components/ListenExplanation";
+import { getQuestion, getResult, setQuestion } from "@/lib/run-store";
 import type { AnalyzeResponse } from "@/lib/mock-analyze";
 
 export const Route = createFileRoute("/results")({
@@ -25,22 +29,22 @@ function ResultsPage() {
   useEffect(() => {
     const r = getResult();
     const q = getQuestion();
-    if (!r || !q) {
-      navigate({ to: "/" });
-      return;
-    }
+    if (!r || !q) { navigate({ to: "/" }); return; }
     setQ(q);
     setData(r);
   }, [navigate]);
+
+  function handleSimilarClick(q: string) {
+    setQuestion(q);
+    navigate({ to: "/run" });
+  }
 
   if (!data || !question) {
     return (
       <main className="min-h-screen flex flex-col bg-background">
         <SiteHeader />
         <div className="flex-1 flex items-center justify-center">
-          <span className="mono text-xs text-foreground/50 uppercase tracking-[0.2em]">
-            Loading findings
-          </span>
+          <span className="mono text-xs text-foreground/50 uppercase tracking-[0.2em]">Loading findings</span>
         </div>
       </main>
     );
@@ -60,45 +64,51 @@ function ResultsPage() {
               <em>"{question}"</em>
             </h1>
           </div>
-          <Link
-            to="/"
-            className="mono text-[11px] uppercase tracking-[0.18em] text-foreground/55 hover:text-foreground transition-colors"
-          >
-            ← ask another
-          </Link>
+          <div className="flex flex-col items-end gap-3">
+            <ResultsActions question={question} data={data} />
+            <div className="flex items-center gap-4">
+              <Link to="/compare" className="mono text-[11px] uppercase tracking-[0.18em] text-foreground/55 hover:text-foreground transition-colors">
+                compare →
+              </Link>
+              <Link to="/" className="mono text-[11px] uppercase tracking-[0.18em] text-foreground/55 hover:text-foreground transition-colors">
+                ← ask another
+              </Link>
+            </div>
+          </div>
         </div>
 
-        {/* Tiny scientist row — they're still around */}
         <div className="mt-6 flex items-end gap-6 opacity-90">
           <div className="flex flex-col items-center">
             <Scientist who="watson" size={72} />
-            <div className="mt-1 text-[10px] text-foreground/50 mono uppercase tracking-[0.18em]">
-              Dr. Watson
-            </div>
+            <div className="mt-1 text-[10px] text-foreground/50 mono uppercase tracking-[0.18em]">Dr. Watson</div>
           </div>
           <div className="flex flex-col items-center">
             <Scientist who="crick" size={72} />
-            <div className="mt-1 text-[10px] text-foreground/50 mono uppercase tracking-[0.18em]">
-              Dr. Crick
-            </div>
+            <div className="mt-1 text-[10px] text-foreground/50 mono uppercase tracking-[0.18em]">Dr. Crick</div>
           </div>
           <div className="flex-1 mb-2 bubble text-sm text-foreground/80 max-w-md">
-            We've laid it out below. The graph traces the causal chain; the report on the
-            right walks through what we found.
+            We've laid it out below. The graph traces the causal chain; the report on the right walks through what we found.
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-6 pb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3">
+            <GraphPanel data={data} />
+          </div>
+          <div className="lg:col-span-2 space-y-4">
+            <ListenExplanation data={data} />
+            <ResultsPanel data={data} onSimilarClick={handleSimilarClick} />
           </div>
         </div>
       </section>
 
       <section className="mx-auto w-full max-w-6xl px-6 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <div className="lg:col-span-3">
-            <GraphPanel data={data} />
-          </div>
-          <div className="lg:col-span-2">
-            <ResultsPanel data={data} />
-          </div>
-        </div>
+        <ExperimentSummary question={question} data={data} />
       </section>
+
+      <AskScientists question={question} data={data} />
 
       <footer className="mt-auto">
         <div className="mx-auto max-w-7xl px-6 py-5 text-center mono text-[10px] uppercase tracking-[0.22em] text-foreground/30">

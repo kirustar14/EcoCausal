@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "watson-crick-source",
+			"path": "../Downloads/watson-crick-source"
+		},
+		{
+			"name": "EcoCausal",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
