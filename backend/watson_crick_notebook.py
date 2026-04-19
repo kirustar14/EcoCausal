@@ -49,7 +49,13 @@ def __(mo):
       .marimo-cell-output,
       .marimo-cell,
       .marimo-notebook,
-      .marimo-output {
+      .marimo-output,
+      .marimo-cell-output > div,
+      .marimo-output > div,
+      .marimo-app-container,
+      .marimo-notebook-container,
+      [class*="notebook"],
+      [class*="cell-output"] {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -147,8 +153,9 @@ def __(mo):
 
       .wc-table-wrap {
         width: 100%;
-        overflow-x: auto;
+        overflow: hidden;
         margin: 0.75rem 0;
+        display: block;
       }
 
       .wc-results-table {
@@ -161,8 +168,11 @@ def __(mo):
         box-shadow: var(--shadow-pop);
         border-radius: 12px;
         overflow: hidden;
-        table-layout: auto !important;
+        table-layout: fixed !important;
+        display: table !important;
       }
+      .wc-results-table col.metric { width: 75%; }
+      .wc-results-table col.value  { width: 25%; }
       .wc-results-table th {
         background: var(--ink);
         color: var(--paper);
@@ -179,8 +189,8 @@ def __(mo):
         word-break: break-word;
       }
       .wc-results-table tr:nth-child(even) td { background: var(--muted); }
-      .wc-results-table td:first-child { color: rgba(26,26,46,0.6); font-size: 11px; width: 60%; }
-      .wc-results-table td:last-child { font-weight: 700; color: var(--ink); width: 40%; }
+      .wc-results-table td:first-child { color: rgba(26,26,46,0.6); font-size: 11px; }
+      .wc-results-table td:last-child  { font-weight: 700; color: var(--ink); }
 
       .badge-high {
         display: inline-block; padding: 2px 10px; border-radius: 999px;
@@ -225,6 +235,7 @@ def __(mo):
         box-shadow: var(--shadow-pop);
         margin-top: 0.75rem;
         width: 100%;
+        box-sizing: border-box;
       }
       .wc-interpretation .interp-label {
         font-family: 'JetBrains Mono', monospace;
@@ -372,6 +383,10 @@ def __(mo, np, stats, threshold, dataset, start_year, end_year, pval_cutoff):
 
     <div class="wc-table-wrap">
       <table class="wc-results-table">
+        <colgroup>
+          <col class="metric" style="width:75%" />
+          <col class="value"  style="width:25%" />
+        </colgroup>
         <thead>
           <tr>
             <th>Metric</th>
