@@ -3,7 +3,7 @@
 > **Science was always a conversation. But now you're in it.**
 
 🏆 **1st Place — ML & AI Tooling Challenge, DataHacks 2026** (Best Use of Marimo/Sphinx)
-Built in 36 hours at UC San Diego by [Kiruthika Marikumaran](https://github.com/kirustar14) & Mallika Dasgupta.
+Built in 36 hours at UC San Diego by Kiruthika Marikumaran & Mallika Dasgupta.
 
 ---
 
